@@ -1,0 +1,634 @@
+{
+  "$schema": "https://ui.shadcn.com/schema.json",
+  "name": "targetym-registry",
+  "version": "1.0.0",
+  "description": "Targetym UI Components & Utilities Registry - Production-ready components for HR management platform",
+  "homepage": "https://github.com/your-org/targetym",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-org/targetym.git"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Targetym Team",
+    "email": "dev@targetym.com"
+  },
+  "style": "new-york",
+  "tailwind": {
+    "config": "tailwind.config.ts",
+    "css": "app/globals.css",
+    "baseColor": "zinc",
+    "cssVariables": true,
+    "prefix": ""
+  },
+  "rsc": true,
+  "tsx": true,
+  "aliases": {
+    "components": "@/components",
+    "utils": "@/lib/utils",
+    "ui": "@/components/ui",
+    "lib": "@/lib",
+    "hooks": "@/hooks",
+    "types": "@/src/types",
+    "actions": "@/src/actions",
+    "services": "@/src/lib/services"
+  },
+  "registry": [
+    {
+      "name": "goals-management",
+      "type": "registry:module",
+      "version": "1.0.0",
+      "description": "Complete Goals & OKR management module with tracking and analytics",
+      "category": "modules",
+      "tags": ["goals", "okr", "tracking", "analytics"],
+      "dependencies": [
+        "react-hook-form",
+        "zod",
+        "@tanstack/react-query",
+        "recharts"
+      ],
+      "registryDependencies": [
+        "ui-form",
+        "ui-dialog",
+        "ui-progress",
+        "ui-card"
+      ],
+      "files": [
+        {
+          "path": "src/components/goals/goal-form.tsx",
+          "type": "registry:ui",
+          "target": "components/goals/goal-form.tsx"
+        },
+        {
+          "path": "src/components/goals/goals-list.tsx",
+          "type": "registry:ui",
+          "target": "components/goals/goals-list.tsx"
+        },
+        {
+          "path": "src/components/goals/goal-detail.tsx",
+          "type": "registry:ui",
+          "target": "components/goals/goal-detail.tsx"
+        },
+        {
+          "path": "src/components/goals/progress-tracker.tsx",
+          "type": "registry:ui",
+          "target": "components/goals/progress-tracker.tsx"
+        },
+        {
+          "path": "src/lib/services/goals.service.ts",
+          "type": "registry:lib",
+          "target": "lib/services/goals.service.ts"
+        },
+        {
+          "path": "src/lib/validations/goals.schemas.ts",
+          "type": "registry:lib",
+          "target": "lib/validations/goals.schemas.ts"
+        }
+      ],
+      "actions": [
+        "src/actions/goals/create-goal.ts",
+        "src/actions/goals/update-goal.ts",
+        "src/actions/goals/delete-goal.ts"
+      ]
+    },
+    {
+      "name": "recruitment-pipeline",
+      "type": "registry:module",
+      "version": "1.0.0",
+      "description": "Complete recruitment pipeline with candidate tracking and interview scheduling",
+      "category": "modules",
+      "tags": ["recruitment", "hiring", "candidates", "interviews"],
+      "dependencies": [
+        "react-hook-form",
+        "zod",
+        "@tanstack/react-query",
+        "date-fns"
+      ],
+      "registryDependencies": [
+        "ui-form",
+        "ui-dialog",
+        "ui-calendar",
+        "ui-card"
+      ],
+      "files": [
+        {
+          "path": "src/components/recruitment/job-posting-form.tsx",
+          "type": "registry:ui",
+          "target": "components/recruitment/job-posting-form.tsx"
+        },
+        {
+          "path": "src/components/recruitment/job-postings-list.tsx",
+          "type": "registry:ui",
+          "target": "components/recruitment/job-postings-list.tsx"
+        },
+        {
+          "path": "src/components/recruitment/candidates-list.tsx",
+          "type": "registry:ui",
+          "target": "components/recruitment/candidates-list.tsx"
+        },
+        {
+          "path": "src/components/recruitment/interview-scheduler.tsx",
+          "type": "registry:ui",
+          "target": "components/recruitment/interview-scheduler.tsx"
+        },
+        {
+          "path": "src/lib/services/recruitment.service.ts",
+          "type": "registry:lib",
+          "target": "lib/services/recruitment.service.ts"
+        },
+        {
+          "path": "src/lib/validations/recruitment.schemas.ts",
+          "type": "registry:lib",
+          "target": "lib/validations/recruitment.schemas.ts"
+        }
+      ]
+    },
+    {
+      "name": "performance-management",
+      "type": "registry:module",
+      "version": "1.0.0",
+      "description": "Performance reviews and feedback management system",
+      "category": "modules",
+      "tags": ["performance", "reviews", "feedback", "ratings"],
+      "dependencies": [
+        "react-hook-form",
+        "zod",
+        "@tanstack/react-query",
+        "recharts"
+      ],
+      "registryDependencies": [
+        "ui-form",
+        "ui-dialog",
+        "ui-rating",
+        "ui-card"
+      ],
+      "files": [
+        {
+          "path": "src/components/performance/reviews-list.tsx",
+          "type": "registry:ui",
+          "target": "components/performance/reviews-list.tsx"
+        },
+        {
+          "path": "src/lib/services/performance.service.ts",
+          "type": "registry:lib",
+          "target": "lib/services/performance.service.ts"
+        },
+        {
+          "path": "src/lib/validations/performance.schemas.ts",
+          "type": "registry:lib",
+          "target": "lib/validations/performance.schemas.ts"
+        }
+      ]
+    },
+    {
+      "name": "realtime-features",
+      "type": "registry:module",
+      "version": "1.0.0",
+      "description": "Realtime updates and subscriptions using Supabase Realtime",
+      "category": "features",
+      "tags": ["realtime", "supabase", "subscriptions", "live-updates"],
+      "dependencies": [
+        "@supabase/supabase-js",
+        "@tanstack/react-query"
+      ],
+      "files": [
+        {
+          "path": "src/lib/realtime/index.ts",
+          "type": "registry:lib",
+          "target": "lib/realtime/index.ts"
+        },
+        {
+          "path": "src/lib/realtime/useRealtimeQuery.ts",
+          "type": "registry:hook",
+          "target": "lib/realtime/useRealtimeQuery.ts"
+        },
+        {
+          "path": "src/lib/realtime/useRealtimeSubscription.ts",
+          "type": "registry:hook",
+          "target": "lib/realtime/useRealtimeSubscription.ts"
+        },
+        {
+          "path": "src/components/realtime/RealtimeIndicator.tsx",
+          "type": "registry:ui",
+          "target": "components/realtime/RealtimeIndicator.tsx"
+        }
+      ]
+    },
+    {
+      "name": "cache-manager",
+      "type": "registry:lib",
+      "version": "1.0.0",
+      "description": "Multi-layer caching system with Redis and browser cache",
+      "category": "utilities",
+      "tags": ["cache", "redis", "performance", "optimization"],
+      "dependencies": [
+        "@upstash/redis"
+      ],
+      "files": [
+        {
+          "path": "src/lib/cache/cache-manager.ts",
+          "type": "registry:lib",
+          "target": "lib/cache/cache-manager.ts"
+        },
+        {
+          "path": "src/lib/cache/redis-cache.ts",
+          "type": "registry:lib",
+          "target": "lib/cache/redis-cache.ts"
+        },
+        {
+          "path": "src/lib/cache/browser-cache.ts",
+          "type": "registry:lib",
+          "target": "lib/cache/browser-cache.ts"
+        },
+        {
+          "path": "src/lib/cache/service-cache.ts",
+          "type": "registry:lib",
+          "target": "lib/cache/service-cache.ts"
+        }
+      ]
+    },
+    {
+      "name": "rate-limiter",
+      "type": "registry:lib",
+      "version": "1.0.0",
+      "description": "Production-ready rate limiting with Upstash Redis",
+      "category": "security",
+      "tags": ["rate-limit", "security", "middleware", "redis"],
+      "dependencies": [
+        "@upstash/ratelimit",
+        "@upstash/redis"
+      ],
+      "files": [
+        {
+          "path": "src/lib/middleware/rate-limiter.ts",
+          "type": "registry:lib",
+          "target": "lib/middleware/rate-limiter.ts"
+        },
+        {
+          "path": "src/lib/middleware/action-rate-limit.ts",
+          "type": "registry:lib",
+          "target": "lib/middleware/action-rate-limit.ts"
+        },
+        {
+          "path": "src/lib/middleware/rate-limit.ts",
+          "type": "registry:lib",
+          "target": "lib/middleware/rate-limit.ts"
+        }
+      ]
+    },
+    {
+      "name": "integrations-framework",
+      "type": "registry:module",
+      "version": "1.0.0",
+      "description": "Extensible integrations framework for third-party services (Microsoft 365, Google, Slack)",
+      "category": "integrations",
+      "tags": ["integrations", "oauth", "microsoft", "google", "slack"],
+      "dependencies": [
+        "@tanstack/react-query"
+      ],
+      "files": [
+        {
+          "path": "src/lib/integrations/base-client.ts",
+          "type": "registry:lib",
+          "target": "lib/integrations/base-client.ts"
+        },
+        {
+          "path": "src/lib/integrations/http-client.ts",
+          "type": "registry:lib",
+          "target": "lib/integrations/http-client.ts"
+        },
+        {
+          "path": "src/lib/integrations/providers/base-client.ts",
+          "type": "registry:lib",
+          "target": "lib/integrations/providers/base-client.ts"
+        },
+        {
+          "path": "src/lib/integrations/providers/google.ts",
+          "type": "registry:lib",
+          "target": "lib/integrations/providers/google.ts"
+        },
+        {
+          "path": "src/lib/integrations/providers/slack.ts",
+          "type": "registry:lib",
+          "target": "lib/integrations/providers/slack.ts"
+        },
+        {
+          "path": "src/lib/services/integrations.service.ts",
+          "type": "registry:lib",
+          "target": "lib/services/integrations.service.ts"
+        },
+        {
+          "path": "src/components/integrations/IntegrationsList.tsx",
+          "type": "registry:ui",
+          "target": "components/integrations/IntegrationsList.tsx"
+        },
+        {
+          "path": "src/components/integrations/IntegrationCard.tsx",
+          "type": "registry:ui",
+          "target": "components/integrations/IntegrationCard.tsx"
+        }
+      ]
+    },
+    {
+      "name": "settings-panels",
+      "type": "registry:module",
+      "version": "1.0.0",
+      "description": "Comprehensive settings panels for app configuration",
+      "category": "features",
+      "tags": ["settings", "configuration", "preferences"],
+      "dependencies": [
+        "react-hook-form",
+        "zod",
+        "@tanstack/react-query"
+      ],
+      "registryDependencies": [
+        "ui-form",
+        "ui-tabs",
+        "ui-switch",
+        "ui-select"
+      ],
+      "files": [
+        {
+          "path": "src/components/settings/ProfileSettings.tsx",
+          "type": "registry:ui",
+          "target": "components/settings/ProfileSettings.tsx"
+        },
+        {
+          "path": "src/components/settings/OrganizationSettings.tsx",
+          "type": "registry:ui",
+          "target": "components/settings/OrganizationSettings.tsx"
+        },
+        {
+          "path": "src/components/settings/SecuritySettings.tsx",
+          "type": "registry:ui",
+          "target": "components/settings/SecuritySettings.tsx"
+        },
+        {
+          "path": "src/components/settings/NotificationSettings.tsx",
+          "type": "registry:ui",
+          "target": "components/settings/NotificationSettings.tsx"
+        },
+        {
+          "path": "src/components/settings/AppearanceSettings.tsx",
+          "type": "registry:ui",
+          "target": "components/settings/AppearanceSettings.tsx"
+        },
+        {
+          "path": "src/lib/services/settings.service.ts",
+          "type": "registry:lib",
+          "target": "lib/services/settings.service.ts"
+        }
+      ]
+    },
+    {
+      "name": "ai-features",
+      "type": "registry:module",
+      "version": "1.0.0",
+      "description": "AI-powered features using OpenAI and Anthropic",
+      "category": "ai",
+      "tags": ["ai", "openai", "anthropic", "cv-scoring", "chat"],
+      "dependencies": [
+        "@ai-sdk/openai",
+        "@ai-sdk/anthropic",
+        "ai"
+      ],
+      "files": [
+        {
+          "path": "src/lib/services/ai.service.ts",
+          "type": "registry:lib",
+          "target": "lib/services/ai.service.ts"
+        },
+        {
+          "path": "src/components/ai/AIChat.tsx",
+          "type": "registry:ui",
+          "target": "components/ai/AIChat.tsx"
+        },
+        {
+          "path": "src/components/ai/CVScoringPanel.tsx",
+          "type": "registry:ui",
+          "target": "components/ai/CVScoringPanel.tsx"
+        }
+      ]
+    },
+    {
+      "name": "ab-testing",
+      "type": "registry:module",
+      "version": "1.0.0",
+      "description": "A/B testing and feature flags system",
+      "category": "analytics",
+      "tags": ["ab-testing", "experiments", "feature-flags", "analytics"],
+      "dependencies": [
+        "recharts",
+        "@tanstack/react-query"
+      ],
+      "files": [
+        {
+          "path": "src/lib/analytics/ab-testing.ts",
+          "type": "registry:lib",
+          "target": "lib/analytics/ab-testing.ts"
+        },
+        {
+          "path": "src/lib/services/admin/ab-testing-admin.service.ts",
+          "type": "registry:lib",
+          "target": "lib/services/admin/ab-testing-admin.service.ts"
+        },
+        {
+          "path": "src/lib/validations/admin/ab-testing.schemas.ts",
+          "type": "registry:lib",
+          "target": "lib/validations/admin/ab-testing.schemas.ts"
+        },
+        {
+          "path": "src/components/admin/experiments/experiment-card.tsx",
+          "type": "registry:ui",
+          "target": "components/admin/experiments/experiment-card.tsx"
+        },
+        {
+          "path": "src/components/admin/experiments/variant-distribution-chart.tsx",
+          "type": "registry:ui",
+          "target": "components/admin/experiments/variant-distribution-chart.tsx"
+        }
+      ]
+    },
+    {
+      "name": "resilience-patterns",
+      "type": "registry:lib",
+      "version": "1.0.0",
+      "description": "Circuit breaker and retry patterns for resilient applications",
+      "category": "utilities",
+      "tags": ["resilience", "circuit-breaker", "retry", "fault-tolerance"],
+      "files": [
+        {
+          "path": "src/lib/resilience/circuit-breaker.ts",
+          "type": "registry:lib",
+          "target": "lib/resilience/circuit-breaker.ts"
+        },
+        {
+          "path": "src/lib/resilience/retry.ts",
+          "type": "registry:lib",
+          "target": "lib/resilience/retry.ts"
+        }
+      ]
+    },
+    {
+      "name": "supabase-auth",
+      "type": "registry:lib",
+      "version": "1.0.0",
+      "description": "Supabase authentication utilities for Next.js",
+      "category": "auth",
+      "tags": ["supabase", "auth", "authentication", "nextjs"],
+      "dependencies": [
+        "@supabase/supabase-js",
+        "@supabase/ssr"
+      ],
+      "files": [
+        {
+          "path": "src/lib/supabase/server.ts",
+          "type": "registry:lib",
+          "target": "lib/supabase/server.ts"
+        },
+        {
+          "path": "src/lib/supabase/client.ts",
+          "type": "registry:lib",
+          "target": "lib/supabase/client.ts"
+        },
+        {
+          "path": "src/lib/supabase/middleware.ts",
+          "type": "registry:lib",
+          "target": "lib/supabase/middleware.ts"
+        },
+        {
+          "path": "src/lib/auth/server-auth.ts",
+          "type": "registry:lib",
+          "target": "lib/auth/server-auth.ts"
+        }
+      ]
+    },
+    {
+      "name": "notifications-system",
+      "type": "registry:module",
+      "version": "1.0.0",
+      "description": "Real-time notifications system with Supabase",
+      "category": "features",
+      "tags": ["notifications", "realtime", "alerts"],
+      "dependencies": [
+        "@supabase/supabase-js",
+        "@tanstack/react-query",
+        "sonner"
+      ],
+      "files": [
+        {
+          "path": "src/lib/services/notifications.service.ts",
+          "type": "registry:lib",
+          "target": "lib/services/notifications.service.ts"
+        },
+        {
+          "path": "src/lib/notifications/goals-notifications.ts",
+          "type": "registry:lib",
+          "target": "lib/notifications/goals-notifications.ts"
+        },
+        {
+          "path": "src/lib/notifications/performance-notifications.ts",
+          "type": "registry:lib",
+          "target": "lib/notifications/performance-notifications.ts"
+        },
+        {
+          "path": "src/lib/notifications/recruitment-notifications.ts",
+          "type": "registry:lib",
+          "target": "lib/notifications/recruitment-notifications.ts"
+        },
+        {
+          "path": "src/components/notifications/NotificationBell.tsx",
+          "type": "registry:ui",
+          "target": "components/notifications/NotificationBell.tsx"
+        },
+        {
+          "path": "src/components/notifications/NotificationList.tsx",
+          "type": "registry:ui",
+          "target": "components/notifications/NotificationList.tsx"
+        }
+      ]
+    },
+    {
+      "name": "kpis-dashboard",
+      "type": "registry:module",
+      "version": "1.0.0",
+      "description": "KPIs tracking and visualization dashboard",
+      "category": "analytics",
+      "tags": ["kpis", "metrics", "dashboard", "charts"],
+      "dependencies": [
+        "recharts",
+        "@tanstack/react-query"
+      ],
+      "files": [
+        {
+          "path": "src/components/kpis/kpi-dashboard.tsx",
+          "type": "registry:ui",
+          "target": "components/kpis/kpi-dashboard.tsx"
+        },
+        {
+          "path": "src/components/kpis/kpis-list.tsx",
+          "type": "registry:ui",
+          "target": "components/kpis/kpis-list.tsx"
+        },
+        {
+          "path": "src/lib/services/kpis.service.ts",
+          "type": "registry:lib",
+          "target": "lib/services/kpis.service.ts"
+        },
+        {
+          "path": "src/lib/validations/kpis.schemas.ts",
+          "type": "registry:lib",
+          "target": "lib/validations/kpis.schemas.ts"
+        }
+      ]
+    },
+    {
+      "name": "error-handling",
+      "type": "registry:lib",
+      "version": "1.0.0",
+      "description": "Centralized error handling and logging utilities",
+      "category": "utilities",
+      "tags": ["errors", "logging", "monitoring"],
+      "dependencies": [
+        "pino"
+      ],
+      "files": [
+        {
+          "path": "src/lib/utils/errors.ts",
+          "type": "registry:lib",
+          "target": "lib/utils/errors.ts"
+        },
+        {
+          "path": "src/lib/utils/logger.ts",
+          "type": "registry:lib",
+          "target": "lib/utils/logger.ts"
+        },
+        {
+          "path": "src/lib/middleware/error-handler.ts",
+          "type": "registry:lib",
+          "target": "lib/middleware/error-handler.ts"
+        }
+      ]
+    },
+    {
+      "name": "response-helpers",
+      "type": "registry:lib",
+      "version": "1.0.0",
+      "description": "Type-safe API response helpers for Server Actions",
+      "category": "utilities",
+      "tags": ["api", "responses", "server-actions", "type-safety"],
+      "files": [
+        {
+          "path": "src/lib/utils/response.ts",
+          "type": "registry:lib",
+          "target": "lib/utils/response.ts"
+        },
+        {
+          "path": "src/lib/utils/pagination.ts",
+          "type": "registry:lib",
+          "target": "lib/utils/pagination.ts"
+        }
+      ]
+    }
+  ]
+}

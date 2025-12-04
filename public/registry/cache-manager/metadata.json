@@ -1,0 +1,24 @@
+{
+  "name": "cache-manager",
+  "type": "registry:lib",
+  "version": "1.0.0",
+  "description": "Multi-layer caching system with Redis and browser cache",
+  "category": "utilities",
+  "tags": [
+    "cache",
+    "redis",
+    "performance",
+    "optimization"
+  ],
+  "dependencies": [
+    "@upstash/redis"
+  ],
+  "registryDependencies": [],
+  "files": [
+    "lib/cache/cache-manager.ts",
+    "lib/cache/redis-cache.ts",
+    "lib/cache/browser-cache.ts",
+    "lib/cache/service-cache.ts"
+  ],
+  "actions": []
+}

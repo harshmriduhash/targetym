@@ -1,0 +1,116 @@
+# Render Blueprint for Targetym
+# Documentation: https://render.com/docs/blueprint-spec
+
+services:
+  # -----------------------------------------------------------------------------
+  # PRODUCTION ENVIRONMENT
+  # -----------------------------------------------------------------------------
+  - type: web
+    name: targetym-production
+    env: node
+    region: frankfurt
+    plan: starter
+    branch: main # Production branch
+
+    # Build Configuration with Cache
+    buildCommand: |
+      echo "=== Build Environment ==="
+      echo "Node: $(node --version)"
+      
+      # Restore cache if available
+      if [ -d "/opt/render/project/.cache" ]; then
+        echo "♻️  Restoring build cache..."
+        cp -r /opt/render/project/.cache/.next .
+      fi
+
+      # Install pnpm using Corepack (Node.js built-in package manager)
+      # Corepack enables consistent package manager versions across environments
+      echo "=== Installing pnpm ==="
+      corepack enable
+      corepack prepare pnpm@10.18.1 --activate
+      
+      echo "=== Installing dependencies ==="
+      pnpm install --frozen-lockfile
+      
+      echo "=== Building Next.js application ==="
+      pnpm run build
+      
+      # Save cache for next build
+      echo "💾 Saving build cache..."
+      mkdir -p /opt/render/project/.cache
+      cp -r .next /opt/render/project/.cache/
+
+    startCommand: pnpm run start
+    healthCheckPath: /api/health
+    autoDeploy: true
+
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NEXT_PUBLIC_APP_URL
+        sync: false
+      - key: NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
+        sync: false
+      - key: CLERK_SECRET_KEY
+        sync: false
+      - key: CLERK_WEBHOOK_SECRET
+        sync: false
+      - key: NEXT_PUBLIC_SUPABASE_URL
+        sync: false
+      - key: NEXT_PUBLIC_SUPABASE_ANON_KEY
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+      - key: PNPM_VERSION
+        value: "10.18.1"
+      - key: NODE_VERSION
+        value: "24.9.0"
+
+  # -----------------------------------------------------------------------------
+  # STAGING ENVIRONMENT
+  # -----------------------------------------------------------------------------
+  - type: web
+    name: targetym-staging
+    env: node
+    region: frankfurt
+    plan: free # Free tier for staging
+    branch: restructure/backend-frontend-separation # Staging/Dev branch
+
+    buildCommand: |
+      # Install pnpm using Corepack (Node.js built-in package manager)
+      corepack enable
+      corepack prepare pnpm@10.18.1 --activate
+      # Install dependencies using frozen lockfile (ensures exact versions)
+      pnpm install --frozen-lockfile
+      # Build Next.js application
+      pnpm run build
+
+    startCommand: pnpm run start
+    healthCheckPath: /api/health
+    autoDeploy: true
+
+    envVars:
+      - key: NODE_ENV
+        value: staging # Important: Staging environment
+      - key: NEXT_PUBLIC_APP_URL
+        sync: false
+      - key: NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
+        sync: false
+      - key: CLERK_SECRET_KEY
+        sync: false
+      - key: CLERK_WEBHOOK_SECRET
+        sync: false
+      - key: NEXT_PUBLIC_SUPABASE_URL
+        sync: false # Use Staging Supabase URL
+      - key: NEXT_PUBLIC_SUPABASE_ANON_KEY
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+      - key: PNPM_VERSION
+        value: "10.18.1"
+      - key: NODE_VERSION
+        value: "24.9.0"

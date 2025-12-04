@@ -1,0 +1,31 @@
+{
+  "name": "performance-management",
+  "type": "registry:module",
+  "version": "1.0.0",
+  "description": "Performance reviews and feedback management system",
+  "category": "modules",
+  "tags": [
+    "performance",
+    "reviews",
+    "feedback",
+    "ratings"
+  ],
+  "dependencies": [
+    "react-hook-form",
+    "zod",
+    "@tanstack/react-query",
+    "recharts"
+  ],
+  "registryDependencies": [
+    "ui-form",
+    "ui-dialog",
+    "ui-rating",
+    "ui-card"
+  ],
+  "files": [
+    "components/performance/reviews-list.tsx",
+    "lib/services/performance.service.ts",
+    "lib/validations/performance.schemas.ts"
+  ],
+  "actions": []
+}

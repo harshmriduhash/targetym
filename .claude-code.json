@@ -1,0 +1,27 @@
+{
+    "project": {
+      "name": "targetym-ai-rh",
+      "type": "nextjs",
+      "framework": "next-14-app-router",
+      "database": "supabase",
+      "styling": "tailwind-shadcn"
+    },
+    "context": {
+      "primary_language": "typescript",
+      "testing_framework": "jest",
+      "state_management": "zustand",
+      "ui_library": "shadcn-ui",
+      "backend": "supabase"
+    },
+    "guidelines": {
+      "code_style": "functional-declarative",
+      "component_pattern": "server-components-first",
+      "naming": "camelCase-variables-kebab-case-files",
+      "imports": "absolute-paths-with-aliases"
+    },
+    "integrations": {
+      "apis": ["microsoft-graph", "asana", "notion", "zoho"],
+      "ai_services": ["openai"],
+      "deployment": "vercel"
+    }
+  }

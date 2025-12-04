@@ -1,0 +1,315 @@
+{
+  "name": "targetym-registry",
+  "version": "1.0.0",
+  "description": "Targetym UI Components & Utilities Registry - Production-ready components for HR management platform",
+  "items": [
+    {
+      "name": "goals-management",
+      "type": "registry:module",
+      "version": "1.0.0",
+      "description": "Complete Goals & OKR management module with tracking and analytics",
+      "category": "modules",
+      "tags": [
+        "goals",
+        "okr",
+        "tracking",
+        "analytics"
+      ],
+      "dependencies": [
+        "react-hook-form",
+        "zod",
+        "@tanstack/react-query",
+        "recharts"
+      ],
+      "registryDependencies": [
+        "ui-form",
+        "ui-dialog",
+        "ui-progress",
+        "ui-card"
+      ]
+    },
+    {
+      "name": "recruitment-pipeline",
+      "type": "registry:module",
+      "version": "1.0.0",
+      "description": "Complete recruitment pipeline with candidate tracking and interview scheduling",
+      "category": "modules",
+      "tags": [
+        "recruitment",
+        "hiring",
+        "candidates",
+        "interviews"
+      ],
+      "dependencies": [
+        "react-hook-form",
+        "zod",
+        "@tanstack/react-query",
+        "date-fns"
+      ],
+      "registryDependencies": [
+        "ui-form",
+        "ui-dialog",
+        "ui-calendar",
+        "ui-card"
+      ]
+    },
+    {
+      "name": "performance-management",
+      "type": "registry:module",
+      "version": "1.0.0",
+      "description": "Performance reviews and feedback management system",
+      "category": "modules",
+      "tags": [
+        "performance",
+        "reviews",
+        "feedback",
+        "ratings"
+      ],
+      "dependencies": [
+        "react-hook-form",
+        "zod",
+        "@tanstack/react-query",
+        "recharts"
+      ],
+      "registryDependencies": [
+        "ui-form",
+        "ui-dialog",
+        "ui-rating",
+        "ui-card"
+      ]
+    },
+    {
+      "name": "realtime-features",
+      "type": "registry:module",
+      "version": "1.0.0",
+      "description": "Realtime updates and subscriptions using Supabase Realtime",
+      "category": "features",
+      "tags": [
+        "realtime",
+        "supabase",
+        "subscriptions",
+        "live-updates"
+      ],
+      "dependencies": [
+        "@supabase/supabase-js",
+        "@tanstack/react-query"
+      ],
+      "registryDependencies": []
+    },
+    {
+      "name": "cache-manager",
+      "type": "registry:lib",
+      "version": "1.0.0",
+      "description": "Multi-layer caching system with Redis and browser cache",
+      "category": "utilities",
+      "tags": [
+        "cache",
+        "redis",
+        "performance",
+        "optimization"
+      ],
+      "dependencies": [
+        "@upstash/redis"
+      ],
+      "registryDependencies": []
+    },
+    {
+      "name": "rate-limiter",
+      "type": "registry:lib",
+      "version": "1.0.0",
+      "description": "Production-ready rate limiting with Upstash Redis",
+      "category": "security",
+      "tags": [
+        "rate-limit",
+        "security",
+        "middleware",
+        "redis"
+      ],
+      "dependencies": [
+        "@upstash/ratelimit",
+        "@upstash/redis"
+      ],
+      "registryDependencies": []
+    },
+    {
+      "name": "integrations-framework",
+      "type": "registry:module",
+      "version": "1.0.0",
+      "description": "Extensible integrations framework for third-party services (Microsoft 365, Google, Slack)",
+      "category": "integrations",
+      "tags": [
+        "integrations",
+        "oauth",
+        "microsoft",
+        "google",
+        "slack"
+      ],
+      "dependencies": [
+        "@tanstack/react-query"
+      ],
+      "registryDependencies": []
+    },
+    {
+      "name": "settings-panels",
+      "type": "registry:module",
+      "version": "1.0.0",
+      "description": "Comprehensive settings panels for app configuration",
+      "category": "features",
+      "tags": [
+        "settings",
+        "configuration",
+        "preferences"
+      ],
+      "dependencies": [
+        "react-hook-form",
+        "zod",
+        "@tanstack/react-query"
+      ],
+      "registryDependencies": [
+        "ui-form",
+        "ui-tabs",
+        "ui-switch",
+        "ui-select"
+      ]
+    },
+    {
+      "name": "ai-features",
+      "type": "registry:module",
+      "version": "1.0.0",
+      "description": "AI-powered features using OpenAI and Anthropic",
+      "category": "ai",
+      "tags": [
+        "ai",
+        "openai",
+        "anthropic",
+        "cv-scoring",
+        "chat"
+      ],
+      "dependencies": [
+        "@ai-sdk/openai",
+        "@ai-sdk/anthropic",
+        "ai"
+      ],
+      "registryDependencies": []
+    },
+    {
+      "name": "ab-testing",
+      "type": "registry:module",
+      "version": "1.0.0",
+      "description": "A/B testing and feature flags system",
+      "category": "analytics",
+      "tags": [
+        "ab-testing",
+        "experiments",
+        "feature-flags",
+        "analytics"
+      ],
+      "dependencies": [
+        "recharts",
+        "@tanstack/react-query"
+      ],
+      "registryDependencies": []
+    },
+    {
+      "name": "resilience-patterns",
+      "type": "registry:lib",
+      "version": "1.0.0",
+      "description": "Circuit breaker and retry patterns for resilient applications",
+      "category": "utilities",
+      "tags": [
+        "resilience",
+        "circuit-breaker",
+        "retry",
+        "fault-tolerance"
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    },
+    {
+      "name": "supabase-auth",
+      "type": "registry:lib",
+      "version": "1.0.0",
+      "description": "Supabase authentication utilities for Next.js",
+      "category": "auth",
+      "tags": [
+        "supabase",
+        "auth",
+        "authentication",
+        "nextjs"
+      ],
+      "dependencies": [
+        "@supabase/supabase-js",
+        "@supabase/ssr"
+      ],
+      "registryDependencies": []
+    },
+    {
+      "name": "notifications-system",
+      "type": "registry:module",
+      "version": "1.0.0",
+      "description": "Real-time notifications system with Supabase",
+      "category": "features",
+      "tags": [
+        "notifications",
+        "realtime",
+        "alerts"
+      ],
+      "dependencies": [
+        "@supabase/supabase-js",
+        "@tanstack/react-query",
+        "sonner"
+      ],
+      "registryDependencies": []
+    },
+    {
+      "name": "kpis-dashboard",
+      "type": "registry:module",
+      "version": "1.0.0",
+      "description": "KPIs tracking and visualization dashboard",
+      "category": "analytics",
+      "tags": [
+        "kpis",
+        "metrics",
+        "dashboard",
+        "charts"
+      ],
+      "dependencies": [
+        "recharts",
+        "@tanstack/react-query"
+      ],
+      "registryDependencies": []
+    },
+    {
+      "name": "error-handling",
+      "type": "registry:lib",
+      "version": "1.0.0",
+      "description": "Centralized error handling and logging utilities",
+      "category": "utilities",
+      "tags": [
+        "errors",
+        "logging",
+        "monitoring"
+      ],
+      "dependencies": [
+        "pino"
+      ],
+      "registryDependencies": []
+    },
+    {
+      "name": "response-helpers",
+      "type": "registry:lib",
+      "version": "1.0.0",
+      "description": "Type-safe API response helpers for Server Actions",
+      "category": "utilities",
+      "tags": [
+        "api",
+        "responses",
+        "server-actions",
+        "type-safety"
+      ],
+      "dependencies": [],
+      "registryDependencies": []
+    }
+  ],
+  "built": "2025-11-15T11:04:30.147Z"
+}

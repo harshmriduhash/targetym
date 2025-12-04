@@ -1,0 +1,164 @@
+name: Registry Publish
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '@resty.json'
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to publish'
+        required: false
+        default: 'auto'
+
+permissions:
+  contents: write
+  packages: write
+  pull-requests: write
+
+jobs:
+  publish:
+    name: Publish Registry
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run all tests
+        run: npm run test:ci
+
+      - name: Build registry
+        run: npm run registry:build
+
+      - name: Validate registry
+        run: npm run registry:validate
+
+      - name: Generate changelog
+        run: |
+          npm install -g conventional-changelog-cli
+          conventional-changelog -p angular -i CHANGELOG.md -s
+
+      - name: Bump version
+        id: version
+        run: |
+          if [ "${{ github.event.inputs.version }}" != "auto" ]; then
+            VERSION="${{ github.event.inputs.version }}"
+          else
+            VERSION=$(node -e "console.log(require('./@resty.json').version)")
+          fi
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Publishing version: $VERSION"
+
+      - name: Create registry package
+        run: |
+          mkdir -p dist/registry
+          cp -r public/registry/* dist/registry/
+          cp @resty.json dist/
+          cp README.md dist/
+          cp LICENSE dist/ 2>/dev/null || echo "No LICENSE file"
+
+      - name: Publish to NPM (if configured)
+        if: env.NPM_TOKEN != ''
+        run: |
+          cd dist
+          npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        continue-on-error: true
+
+      - name: Publish to GitHub Packages
+        run: |
+          echo "@targetym:registry=https://npm.pkg.github.com" >> dist/.npmrc
+          cd dist
+          npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        continue-on-error: true
+
+      - name: Upload to Vercel
+        if: env.VERCEL_TOKEN != ''
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          working-directory: ./public/registry
+        continue-on-error: true
+
+      - name: Create Git tag
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git tag -a "v${{ steps.version.outputs.version }}" -m "Release v${{ steps.version.outputs.version }}"
+          git push origin "v${{ steps.version.outputs.version }}"
+        continue-on-error: true
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: "v${{ steps.version.outputs.version }}"
+          name: "Registry v${{ steps.version.outputs.version }}"
+          body_path: CHANGELOG.md
+          files: |
+            public/registry/**/*
+            @resty.json
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Notify success
+        run: |
+          echo "# 🎉 Registry Published Successfully!" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Version**: ${{ steps.version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Tag**: v${{ steps.version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Published**: $(date)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          node -e "
+            const stats = require('./public/registry/stats.json');
+            console.log('## Statistics');
+            console.log('- **Components**: ' + stats.totalComponents);
+            console.log('- **Categories**: ' + stats.categories.length);
+            console.log('');
+            console.log('## Categories');
+            stats.categories.forEach(cat => {
+              console.log('- ' + cat.name + ': ' + cat.count);
+            });
+          " >> $GITHUB_STEP_SUMMARY
+
+      - name: Send Slack notification
+        if: env.SLACK_WEBHOOK != ''
+        uses: slackapi/slack-github-action@v1
+        with:
+          payload: |
+            {
+              "text": "Registry v${{ steps.version.outputs.version }} published successfully!",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "🎉 *Registry Published*\nVersion: *v${{ steps.version.outputs.version }}*"
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+        continue-on-error: true

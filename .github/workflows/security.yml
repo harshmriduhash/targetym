@@ -1,0 +1,64 @@
+name: Security Audit
+
+on:
+  schedule:
+    # Tous les lundis à 9h UTC
+    - cron: '0 9 * * 1'
+  workflow_dispatch: # Permet de lancer manuellement
+  push:
+    branches: [main]
+    paths:
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+
+jobs:
+  security-audit:
+    name: Security Audit
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 10.18.1
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: 'pnpm'
+
+      - name: 🔒 Run pnpm audit
+        run: |
+          echo "🔍 Running security audit..."
+          pnpm audit --audit-level=moderate || true
+          
+      - name: 📦 Check for outdated dependencies
+        run: |
+          echo "📊 Checking for outdated dependencies..."
+          pnpm outdated || true
+
+      - name: 🔍 Check for known vulnerabilities
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          format: 'table'
+          exit-code: '0' # Ne pas faire échouer le workflow
+
+  dependency-review:
+    name: Dependency Review
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🔍 Dependency Review
+        uses: actions/dependency-review-action@v3
+        with:
+          fail-on-severity: moderate

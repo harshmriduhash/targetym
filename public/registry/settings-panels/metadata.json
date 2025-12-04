@@ -1,0 +1,32 @@
+{
+  "name": "settings-panels",
+  "type": "registry:module",
+  "version": "1.0.0",
+  "description": "Comprehensive settings panels for app configuration",
+  "category": "features",
+  "tags": [
+    "settings",
+    "configuration",
+    "preferences"
+  ],
+  "dependencies": [
+    "react-hook-form",
+    "zod",
+    "@tanstack/react-query"
+  ],
+  "registryDependencies": [
+    "ui-form",
+    "ui-tabs",
+    "ui-switch",
+    "ui-select"
+  ],
+  "files": [
+    "components/settings/ProfileSettings.tsx",
+    "components/settings/OrganizationSettings.tsx",
+    "components/settings/SecuritySettings.tsx",
+    "components/settings/NotificationSettings.tsx",
+    "components/settings/AppearanceSettings.tsx",
+    "lib/services/settings.service.ts"
+  ],
+  "actions": []
+}

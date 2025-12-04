@@ -1,0 +1,20 @@
+{
+  "name": "resilience-patterns",
+  "type": "registry:lib",
+  "version": "1.0.0",
+  "description": "Circuit breaker and retry patterns for resilient applications",
+  "category": "utilities",
+  "tags": [
+    "resilience",
+    "circuit-breaker",
+    "retry",
+    "fault-tolerance"
+  ],
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    "lib/resilience/circuit-breaker.ts",
+    "lib/resilience/retry.ts"
+  ],
+  "actions": []
+}

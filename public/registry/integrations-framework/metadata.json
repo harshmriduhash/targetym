@@ -1,0 +1,29 @@
+{
+  "name": "integrations-framework",
+  "type": "registry:module",
+  "version": "1.0.0",
+  "description": "Extensible integrations framework for third-party services (Microsoft 365, Google, Slack)",
+  "category": "integrations",
+  "tags": [
+    "integrations",
+    "oauth",
+    "microsoft",
+    "google",
+    "slack"
+  ],
+  "dependencies": [
+    "@tanstack/react-query"
+  ],
+  "registryDependencies": [],
+  "files": [
+    "lib/integrations/base-client.ts",
+    "lib/integrations/http-client.ts",
+    "lib/integrations/providers/base-client.ts",
+    "lib/integrations/providers/google.ts",
+    "lib/integrations/providers/slack.ts",
+    "lib/services/integrations.service.ts",
+    "components/integrations/IntegrationsList.tsx",
+    "components/integrations/IntegrationCard.tsx"
+  ],
+  "actions": []
+}

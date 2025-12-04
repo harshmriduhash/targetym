@@ -1,0 +1,24 @@
+{
+  "name": "rate-limiter",
+  "type": "registry:lib",
+  "version": "1.0.0",
+  "description": "Production-ready rate limiting with Upstash Redis",
+  "category": "security",
+  "tags": [
+    "rate-limit",
+    "security",
+    "middleware",
+    "redis"
+  ],
+  "dependencies": [
+    "@upstash/ratelimit",
+    "@upstash/redis"
+  ],
+  "registryDependencies": [],
+  "files": [
+    "lib/middleware/rate-limiter.ts",
+    "lib/middleware/action-rate-limit.ts",
+    "lib/middleware/rate-limit.ts"
+  ],
+  "actions": []
+}

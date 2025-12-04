@@ -1,0 +1,34 @@
+{
+  "name": "recruitment-pipeline",
+  "type": "registry:module",
+  "version": "1.0.0",
+  "description": "Complete recruitment pipeline with candidate tracking and interview scheduling",
+  "category": "modules",
+  "tags": [
+    "recruitment",
+    "hiring",
+    "candidates",
+    "interviews"
+  ],
+  "dependencies": [
+    "react-hook-form",
+    "zod",
+    "@tanstack/react-query",
+    "date-fns"
+  ],
+  "registryDependencies": [
+    "ui-form",
+    "ui-dialog",
+    "ui-calendar",
+    "ui-card"
+  ],
+  "files": [
+    "components/recruitment/job-posting-form.tsx",
+    "components/recruitment/job-postings-list.tsx",
+    "components/recruitment/candidates-list.tsx",
+    "components/recruitment/interview-scheduler.tsx",
+    "lib/services/recruitment.service.ts",
+    "lib/validations/recruitment.schemas.ts"
+  ],
+  "actions": []
+}

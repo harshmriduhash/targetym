@@ -1,0 +1,227 @@
+# Integration Tests Workflow
+# Tests OAuth integration system with external providers
+
+name: Integration Tests
+
+on:
+  pull_request:
+    paths:
+      - 'src/lib/integrations/**'
+      - 'src/actions/integrations/**'
+      - 'src/components/integrations/**'
+      - 'app/integrations/**'
+      - 'app/api/webhooks/**'
+      - '__tests__/integration/**'
+      - '__tests__/unit/lib/integrations/**'
+      - 'supabase/migrations/*integrations*'
+  push:
+    branches:
+      - main
+      - develop
+    paths:
+      - 'src/lib/integrations/**'
+      - 'src/actions/integrations/**'
+
+jobs:
+  integration-tests:
+    name: Run Integration Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    strategy:
+      matrix:
+        node-version: [20.x]
+
+    services:
+      postgres:
+        image: supabase/postgres:15.1.0.147
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Setup test environment
+        run: |
+          cp .env.example .env.test
+          echo "INTEGRATION_ENCRYPTION_KEY=$(openssl rand -hex 32)" >> .env.test
+          echo "DATABASE_URL=postgresql://postgres:postgres@localhost:5432/postgres" >> .env.test
+
+      - name: Run database migrations
+        run: |
+          npx supabase db reset --db-url postgresql://postgres:postgres@localhost:5432/postgres
+        env:
+          SUPABASE_DB_URL: postgresql://postgres:postgres@localhost:5432/postgres
+
+      - name: Run integration tests
+        run: npm run test:integration
+        env:
+          NODE_ENV: test
+          INTEGRATION_ENCRYPTION_KEY: ${{ secrets.INTEGRATION_ENCRYPTION_KEY_TEST }}
+
+      - name: Run unit tests for integrations
+        run: npm test -- __tests__/unit/lib/integrations --coverage
+        env:
+          NODE_ENV: test
+
+      - name: Upload coverage reports
+        uses: codecov/codecov-action@v4
+        with:
+          files: ./coverage/lcov.info
+          flags: integrations
+          name: integration-coverage
+
+      - name: Check coverage threshold
+        run: |
+          COVERAGE=$(npm test -- --coverage --silent | grep "All files" | awk '{print $4}' | sed 's/%//')
+          if (( $(echo "$COVERAGE < 80" | bc -l) )); then
+            echo "Coverage $COVERAGE% is below 80% threshold"
+            exit 1
+          fi
+
+  security-scan:
+    name: Security Scan - OAuth & Encryption
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Snyk security scan
+        uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --severity-threshold=high --file=package.json
+
+      - name: Run OWASP Dependency Check
+        uses: dependency-check/Dependency-Check_Action@main
+        with:
+          project: 'targetym-integrations'
+          path: '.'
+          format: 'HTML'
+          args: >
+            --failOnCVSS 7
+            --enableRetired
+
+      - name: Check for hardcoded secrets
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          base: ${{ github.event.repository.default_branch }}
+          head: HEAD
+
+  performance-test:
+    name: Performance Test - OAuth Flows
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run performance benchmarks
+        run: npm run test:performance
+        continue-on-error: true
+
+      - name: Upload performance results
+        uses: actions/upload-artifact@v4
+        with:
+          name: performance-results
+          path: ./performance-results.json
+
+  lint-security:
+    name: Lint for Security Issues
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run ESLint security rules
+        run: npx eslint src/lib/integrations src/actions/integrations --ext .ts,.tsx
+
+      - name: Run TypeScript strict checks
+        run: npm run type-check
+
+  integration-health-check:
+    name: Integration Health Check
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Test OAuth endpoints accessibility
+        run: |
+          curl -f https://slack.com/api/oauth.v2.authorize || exit 1
+          curl -f https://accounts.google.com/o/oauth2/v2/auth || exit 1
+          echo "All OAuth endpoints are accessible"
+
+      - name: Verify environment variables
+        run: |
+          # Check that required env vars are set (without exposing values)
+          [ ! -z "${{ secrets.SLACK_CLIENT_ID }}" ] || echo "SLACK_CLIENT_ID missing"
+          [ ! -z "${{ secrets.GOOGLE_CLIENT_ID }}" ] || echo "GOOGLE_CLIENT_ID missing"
+          [ ! -z "${{ secrets.INTEGRATION_ENCRYPTION_KEY }}" ] || echo "INTEGRATION_ENCRYPTION_KEY missing"
+
+  notify-on-failure:
+    name: Notify on Test Failure
+    runs-on: ubuntu-latest
+    needs: [integration-tests, security-scan]
+    if: failure()
+
+    steps:
+      - name: Send Slack notification
+        uses: slackapi/slack-github-action@v1
+        with:
+          webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
+          payload: |
+            {
+              "text": "Integration tests failed on ${{ github.repository }}",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "🚨 Integration tests failed\n*Repository:* ${{ github.repository }}\n*Branch:* ${{ github.ref }}\n*Commit:* ${{ github.sha }}"
+                  }
+                }
+              ]
+            }

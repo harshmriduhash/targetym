@@ -1,0 +1,25 @@
+{
+  "name": "realtime-features",
+  "type": "registry:module",
+  "version": "1.0.0",
+  "description": "Realtime updates and subscriptions using Supabase Realtime",
+  "category": "features",
+  "tags": [
+    "realtime",
+    "supabase",
+    "subscriptions",
+    "live-updates"
+  ],
+  "dependencies": [
+    "@supabase/supabase-js",
+    "@tanstack/react-query"
+  ],
+  "registryDependencies": [],
+  "files": [
+    "lib/realtime/index.ts",
+    "lib/realtime/useRealtimeQuery.ts",
+    "lib/realtime/useRealtimeSubscription.ts",
+    "components/realtime/RealtimeIndicator.tsx"
+  ],
+  "actions": []
+}

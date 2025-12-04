@@ -1,0 +1,26 @@
+{
+  "name": "ai-features",
+  "type": "registry:module",
+  "version": "1.0.0",
+  "description": "AI-powered features using OpenAI and Anthropic",
+  "category": "ai",
+  "tags": [
+    "ai",
+    "openai",
+    "anthropic",
+    "cv-scoring",
+    "chat"
+  ],
+  "dependencies": [
+    "@ai-sdk/openai",
+    "@ai-sdk/anthropic",
+    "ai"
+  ],
+  "registryDependencies": [],
+  "files": [
+    "lib/services/ai.service.ts",
+    "components/ai/AIChat.tsx",
+    "components/ai/CVScoringPanel.tsx"
+  ],
+  "actions": []
+}

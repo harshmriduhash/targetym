@@ -1,0 +1,132 @@
+{
+  "built": "2025-11-15T11:04:30.147Z",
+  "version": "1.0.0",
+  "totalItems": 16,
+  "totalFiles": 69,
+  "categories": [
+    {
+      "name": "modules",
+      "count": 3
+    },
+    {
+      "name": "features",
+      "count": 3
+    },
+    {
+      "name": "utilities",
+      "count": 4
+    },
+    {
+      "name": "security",
+      "count": 1
+    },
+    {
+      "name": "integrations",
+      "count": 1
+    },
+    {
+      "name": "ai",
+      "count": 1
+    },
+    {
+      "name": "analytics",
+      "count": 2
+    },
+    {
+      "name": "auth",
+      "count": 1
+    }
+  ],
+  "types": [
+    {
+      "type": "registry:module",
+      "count": 10
+    },
+    {
+      "type": "registry:lib",
+      "count": 6
+    }
+  ],
+  "tags": [
+    {
+      "tag": "analytics",
+      "count": 2
+    },
+    {
+      "tag": "performance",
+      "count": 2
+    },
+    {
+      "tag": "realtime",
+      "count": 2
+    },
+    {
+      "tag": "supabase",
+      "count": 2
+    },
+    {
+      "tag": "redis",
+      "count": 2
+    },
+    {
+      "tag": "goals",
+      "count": 1
+    },
+    {
+      "tag": "okr",
+      "count": 1
+    },
+    {
+      "tag": "tracking",
+      "count": 1
+    },
+    {
+      "tag": "recruitment",
+      "count": 1
+    },
+    {
+      "tag": "hiring",
+      "count": 1
+    },
+    {
+      "tag": "candidates",
+      "count": 1
+    },
+    {
+      "tag": "interviews",
+      "count": 1
+    },
+    {
+      "tag": "reviews",
+      "count": 1
+    },
+    {
+      "tag": "feedback",
+      "count": 1
+    },
+    {
+      "tag": "ratings",
+      "count": 1
+    },
+    {
+      "tag": "subscriptions",
+      "count": 1
+    },
+    {
+      "tag": "live-updates",
+      "count": 1
+    },
+    {
+      "tag": "cache",
+      "count": 1
+    },
+    {
+      "tag": "optimization",
+      "count": 1
+    },
+    {
+      "tag": "rate-limit",
+      "count": 1
+    }
+  ]
+}

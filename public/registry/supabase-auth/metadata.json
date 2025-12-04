@@ -1,0 +1,25 @@
+{
+  "name": "supabase-auth",
+  "type": "registry:lib",
+  "version": "1.0.0",
+  "description": "Supabase authentication utilities for Next.js",
+  "category": "auth",
+  "tags": [
+    "supabase",
+    "auth",
+    "authentication",
+    "nextjs"
+  ],
+  "dependencies": [
+    "@supabase/supabase-js",
+    "@supabase/ssr"
+  ],
+  "registryDependencies": [],
+  "files": [
+    "lib/supabase/server.ts",
+    "lib/supabase/client.ts",
+    "lib/supabase/middleware.ts",
+    "lib/auth/server-auth.ts"
+  ],
+  "actions": []
+}

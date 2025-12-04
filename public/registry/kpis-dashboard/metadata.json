@@ -1,0 +1,25 @@
+{
+  "name": "kpis-dashboard",
+  "type": "registry:module",
+  "version": "1.0.0",
+  "description": "KPIs tracking and visualization dashboard",
+  "category": "analytics",
+  "tags": [
+    "kpis",
+    "metrics",
+    "dashboard",
+    "charts"
+  ],
+  "dependencies": [
+    "recharts",
+    "@tanstack/react-query"
+  ],
+  "registryDependencies": [],
+  "files": [
+    "components/kpis/kpi-dashboard.tsx",
+    "components/kpis/kpis-list.tsx",
+    "lib/services/kpis.service.ts",
+    "lib/validations/kpis.schemas.ts"
+  ],
+  "actions": []
+}

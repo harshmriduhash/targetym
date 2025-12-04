@@ -1,0 +1,22 @@
+{
+  "name": "error-handling",
+  "type": "registry:lib",
+  "version": "1.0.0",
+  "description": "Centralized error handling and logging utilities",
+  "category": "utilities",
+  "tags": [
+    "errors",
+    "logging",
+    "monitoring"
+  ],
+  "dependencies": [
+    "pino"
+  ],
+  "registryDependencies": [],
+  "files": [
+    "lib/utils/errors.ts",
+    "lib/utils/logger.ts",
+    "lib/middleware/error-handler.ts"
+  ],
+  "actions": []
+}

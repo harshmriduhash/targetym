@@ -1,0 +1,494 @@
+openapi: 3.0.3
+info:
+  title: Targetym API
+  description: AI-powered HR Management Platform API
+  version: 1.0.0
+  contact:
+    name: Targetym Support
+    url: https://targetym.com
+  license:
+    name: Proprietary
+
+servers:
+  - url: http://localhost:3000/api
+    description: Local development
+  - url: https://targetym.vercel.app/api
+    description: Production
+
+tags:
+  - name: Goals
+    description: Goals & OKRs management
+  - name: KPIs
+    description: Key Performance Indicators
+  - name: Recruitment
+    description: Recruitment pipeline management
+  - name: Performance
+    description: Performance reviews and feedback
+  - name: AI
+    description: AI-powered features
+
+paths:
+  # =========================================================================
+  # GOALS & OKRs
+  # =========================================================================
+  /v1/goals:
+    get:
+      tags: [Goals]
+      summary: List goals
+      description: Get paginated list of goals with optional filters
+      operationId: getGoals
+      security:
+        - ClerkAuth: []
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: pageSize
+          in: query
+          schema:
+            type: integer
+            default: 20
+            maximum: 100
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [draft, active, completed, cancelled]
+        - name: period
+          in: query
+          schema:
+            type: string
+            enum: [quarterly, annual, custom]
+        - name: owner_id
+          in: query
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoalsListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+    post:
+      tags: [Goals]
+      summary: Create goal
+      description: Create a new goal
+      operationId: createGoal
+      security:
+        - ClerkAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateGoalRequest'
+      responses:
+        '201':
+          description: Goal created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoalResponse'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /v1/goals/{goalId}:
+    get:
+      tags: [Goals]
+      summary: Get goal
+      description: Get goal details by ID
+      operationId: getGoal
+      security:
+        - ClerkAuth: []
+      parameters:
+        - name: goalId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoalResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    patch:
+      tags: [Goals]
+      summary: Update goal
+      description: Update goal details
+      operationId: updateGoal
+      security:
+        - ClerkAuth: []
+      parameters:
+        - name: goalId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateGoalRequest'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoalResponse'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  # =========================================================================
+  # KPIs
+  # =========================================================================
+  /v1/kpis:
+    get:
+      tags: [KPIs]
+      summary: List KPIs
+      description: Get paginated list of KPIs
+      operationId: getKpis
+      security:
+        - ClerkAuth: []
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: pageSize
+          in: query
+          schema:
+            type: integer
+            default: 20
+        - name: category
+          in: query
+          schema:
+            type: string
+        - name: department
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KpisListResponse'
+
+    post:
+      tags: [KPIs]
+      summary: Create KPI
+      description: Create a new KPI
+      operationId: createKpi
+      security:
+        - ClerkAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateKpiRequest'
+      responses:
+        '201':
+          description: KPI created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KpiResponse'
+
+# =========================================================================
+# COMPONENTS
+# =========================================================================
+components:
+  securitySchemes:
+    ClerkAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    # -----------------------------------------------------------------------
+    # Goals
+    # -----------------------------------------------------------------------
+    Goal:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        description:
+          type: string
+          nullable: true
+        period:
+          type: string
+          enum: [quarterly, annual, custom]
+        status:
+          type: string
+          enum: [draft, active, completed, cancelled]
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+        owner_id:
+          type: string
+          format: uuid
+        organization_id:
+          type: string
+          format: uuid
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    CreateGoalRequest:
+      type: object
+      required: [title, period, start_date, end_date]
+      properties:
+        title:
+          type: string
+          minLength: 3
+          maxLength: 200
+        description:
+          type: string
+          maxLength: 2000
+        period:
+          type: string
+          enum: [quarterly, annual, custom]
+        status:
+          type: string
+          enum: [draft, active, completed, cancelled]
+          default: draft
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+        visibility:
+          type: string
+          enum: [private, team, organization]
+          default: team
+
+    UpdateGoalRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 3
+          maxLength: 200
+        description:
+          type: string
+          maxLength: 2000
+        status:
+          type: string
+          enum: [draft, active, completed, cancelled]
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+
+    GoalResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          $ref: '#/components/schemas/Goal'
+
+    GoalsListResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Goal'
+        meta:
+          $ref: '#/components/schemas/PaginationMeta'
+
+    # -----------------------------------------------------------------------
+    # KPIs
+    # -----------------------------------------------------------------------
+    Kpi:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        category:
+          type: string
+        metric_type:
+          type: string
+          default: number
+        unit:
+          type: string
+        target_value:
+          type: number
+        current_value:
+          type: number
+        status:
+          type: string
+        owner_id:
+          type: string
+          format: uuid
+        organization_id:
+          type: string
+          format: uuid
+        created_at:
+          type: string
+          format: date-time
+
+    CreateKpiRequest:
+      type: object
+      required: [name, category]
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        category:
+          type: string
+        metric_type:
+          type: string
+          default: number
+        unit:
+          type: string
+        target_value:
+          type: number
+        baseline_value:
+          type: number
+
+    KpiResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          $ref: '#/components/schemas/Kpi'
+
+    KpisListResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Kpi'
+        meta:
+          $ref: '#/components/schemas/PaginationMeta'
+
+    # -----------------------------------------------------------------------
+    # Common
+    # -----------------------------------------------------------------------
+    PaginationMeta:
+      type: object
+      properties:
+        page:
+          type: integer
+        pageSize:
+          type: integer
+        totalItems:
+          type: integer
+        totalPages:
+          type: integer
+        hasNextPage:
+          type: boolean
+        hasPreviousPage:
+          type: boolean
+
+    Error:
+      type: object
+      properties:
+        success:
+          type: boolean
+          default: false
+        error:
+          type: string
+        code:
+          type: string
+        details:
+          type: object
+
+  responses:
+    Unauthorized:
+      description: Unauthorized - Invalid or missing authentication
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            success: false
+            error: "Unauthorized"
+            code: "UNAUTHORIZED"
+
+    Forbidden:
+      description: Forbidden - Insufficient permissions
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            success: false
+            error: "Forbidden"
+            code: "FORBIDDEN"
+
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            success: false
+            error: "Resource not found"
+            code: "NOT_FOUND"
+
+    ValidationError:
+      description: Validation error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            success: false
+            error: "Validation failed"
+            code: "VALIDATION_ERROR"
+            details:
+              field: "email"
+              message: "Invalid email format"

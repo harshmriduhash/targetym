@@ -1,0 +1,20 @@
+{
+  "name": "response-helpers",
+  "type": "registry:lib",
+  "version": "1.0.0",
+  "description": "Type-safe API response helpers for Server Actions",
+  "category": "utilities",
+  "tags": [
+    "api",
+    "responses",
+    "server-actions",
+    "type-safety"
+  ],
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    "lib/utils/response.ts",
+    "lib/utils/pagination.ts"
+  ],
+  "actions": []
+}

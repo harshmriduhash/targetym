@@ -1,0 +1,38 @@
+{
+  "name": "goals-management",
+  "type": "registry:module",
+  "version": "1.0.0",
+  "description": "Complete Goals & OKR management module with tracking and analytics",
+  "category": "modules",
+  "tags": [
+    "goals",
+    "okr",
+    "tracking",
+    "analytics"
+  ],
+  "dependencies": [
+    "react-hook-form",
+    "zod",
+    "@tanstack/react-query",
+    "recharts"
+  ],
+  "registryDependencies": [
+    "ui-form",
+    "ui-dialog",
+    "ui-progress",
+    "ui-card"
+  ],
+  "files": [
+    "components/goals/goal-form.tsx",
+    "components/goals/goals-list.tsx",
+    "components/goals/goal-detail.tsx",
+    "components/goals/progress-tracker.tsx",
+    "lib/services/goals.service.ts",
+    "lib/validations/goals.schemas.ts"
+  ],
+  "actions": [
+    "src/actions/goals/create-goal.ts",
+    "src/actions/goals/update-goal.ts",
+    "src/actions/goals/delete-goal.ts"
+  ]
+}

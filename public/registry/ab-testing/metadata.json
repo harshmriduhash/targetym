@@ -1,0 +1,26 @@
+{
+  "name": "ab-testing",
+  "type": "registry:module",
+  "version": "1.0.0",
+  "description": "A/B testing and feature flags system",
+  "category": "analytics",
+  "tags": [
+    "ab-testing",
+    "experiments",
+    "feature-flags",
+    "analytics"
+  ],
+  "dependencies": [
+    "recharts",
+    "@tanstack/react-query"
+  ],
+  "registryDependencies": [],
+  "files": [
+    "lib/analytics/ab-testing.ts",
+    "lib/services/admin/ab-testing-admin.service.ts",
+    "lib/validations/admin/ab-testing.schemas.ts",
+    "components/admin/experiments/experiment-card.tsx",
+    "components/admin/experiments/variant-distribution-chart.tsx"
+  ],
+  "actions": []
+}
