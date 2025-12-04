@@ -1,3 +1,14 @@
+import SetupWizard from '@/components/onboarding/SetupWizard'
+
+export default function OnboardingPage() {
+  return (
+    <main className="min-h-screen bg-gray-50 py-12">
+      <div className="container mx-auto px-4">
+        <SetupWizard />
+      </div>
+    </main>
+  )
+}
 import { redirect } from "next/navigation";
 import { OnboardingWizard } from "@/components/onboarding/OnboardingWizard";
 import { createClient } from '@/src/lib/supabase/server';
