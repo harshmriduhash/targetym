@@ -4,22 +4,22 @@
  * Displays experiment assignments over time
  */
 
-'use client'
+"use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { format, parseISO } from 'date-fns'
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { format, parseISO } from "date-fns";
 
 interface AssignmentsByDay {
-  date: string
-  count: number
+  date: string;
+  count: number;
 }
 
 interface AssignmentsTimelineProps {
-  data: AssignmentsByDay[]
+  data: AssignmentsByDay[];
 }
 
 export function AssignmentsTimeline({ data }: AssignmentsTimelineProps) {
-  const maxCount = Math.max(...data.map((d) => d.count), 1)
+  const maxCount = Math.max(...data.map((d) => d.count), 1);
 
   return (
     <Card>
@@ -34,13 +34,13 @@ export function AssignmentsTimeline({ data }: AssignmentsTimelineProps) {
         ) : (
           <div className="space-y-2">
             {data.map((day) => {
-              const barWidth = (day.count / maxCount) * 100
+              const barWidth = (day.count / maxCount) * 100;
 
               return (
                 <div key={day.date} className="space-y-1">
                   <div className="flex items-center justify-between text-sm">
                     <span className="text-muted-foreground">
-                      {format(parseISO(day.date), 'MMM dd')}
+                      {format(parseISO(day.date), "MMM dd")}
                     </span>
                     <span className="font-medium">{day.count}</span>
                   </div>
@@ -51,11 +51,11 @@ export function AssignmentsTimeline({ data }: AssignmentsTimelineProps) {
                     />
                   </div>
                 </div>
-              )
+              );
             })}
           </div>
         )}
       </CardContent>
     </Card>
-  )
+  );
 }
