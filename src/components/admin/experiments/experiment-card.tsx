@@ -4,10 +4,10 @@
  * Displays experiment summary in a card format
  */
 
-'use client'
+"use client";
 
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -15,32 +15,32 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card'
-import { Progress } from '@/components/ui/progress'
-import type { Database } from '@/src/types/database.types'
-import { formatDistanceToNow } from 'date-fns'
-import { Play, Pause, Eye, Download } from 'lucide-react'
-import Link from 'next/link'
+} from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
+import type { Database } from "@/src/types/database.types";
+import { formatDistanceToNow } from "date-fns";
+import { Play, Pause, Eye, Download } from "lucide-react";
+import Link from "next/link";
 
 type ABTestExperiment =
-  Database['public']['Tables']['ab_test_experiments']['Row']
+  Database["public"]["Tables"]["ab_test_experiments"]["Row"];
 
 interface ExperimentCardProps {
-  experiment: ABTestExperiment
+  experiment: ABTestExperiment;
   stats?: {
-    totalAssignments: number
-    totalExposures: number
-  }
-  onToggle?: (experimentId: string) => void
-  onExport?: (experimentId: string) => void
+    totalAssignments: number;
+    totalExposures: number;
+  };
+  onToggle?: (experimentId: string) => void;
+  onExport?: (experimentId: string) => void;
 }
 
 const statusConfig = {
-  draft: { label: 'Draft', color: 'bg-gray-500' },
-  running: { label: 'Running', color: 'bg-green-500' },
-  paused: { label: 'Paused', color: 'bg-yellow-500' },
-  completed: { label: 'Completed', color: 'bg-blue-500' },
-}
+  draft: { label: "Draft", color: "bg-gray-500" },
+  running: { label: "Running", color: "bg-green-500" },
+  paused: { label: "Paused", color: "bg-yellow-500" },
+  completed: { label: "Completed", color: "bg-blue-500" },
+};
 
 export function ExperimentCard({
   experiment,
@@ -48,11 +48,11 @@ export function ExperimentCard({
   onToggle,
   onExport,
 }: ExperimentCardProps) {
-  const status = experiment.status || 'draft'
-  const statusInfo = statusConfig[status as keyof typeof statusConfig]
+  const status = experiment.status || "draft";
+  const statusInfo = statusConfig[status as keyof typeof statusConfig];
 
-  const variants = (experiment.variants as any[]) || []
-  const totalWeight = variants.reduce((sum, v) => sum + (v.weight || 0), 0)
+  const variants = (experiment.variants as any[]) || [];
+  const totalWeight = variants.reduce((sum, v) => sum + (v.weight || 0), 0);
 
   return (
     <Card className="hover:shadow-lg transition-shadow">
@@ -76,7 +76,10 @@ export function ExperimentCard({
             {variants.map((variant) => (
               <div key={variant.id} className="flex items-center gap-2">
                 <Badge variant="outline">{variant.name}</Badge>
-                <Progress value={(variant.weight / totalWeight) * 100} className="flex-1" />
+                <Progress
+                  value={(variant.weight / totalWeight) * 100}
+                  className="flex-1"
+                />
                 <span className="text-sm text-muted-foreground">
                   {variant.weight}%
                 </span>
@@ -103,7 +106,7 @@ export function ExperimentCard({
         <div className="flex gap-4 text-sm text-muted-foreground">
           {experiment.start_date && (
             <div>
-              Started{' '}
+              Started{" "}
               {formatDistanceToNow(new Date(experiment.start_date), {
                 addSuffix: true,
               })}
@@ -111,7 +114,7 @@ export function ExperimentCard({
           )}
           {experiment.end_date && (
             <div>
-              Ends{' '}
+              Ends{" "}
               {formatDistanceToNow(new Date(experiment.end_date), {
                 addSuffix: true,
               })}
@@ -128,13 +131,13 @@ export function ExperimentCard({
           </Link>
         </Button>
 
-        {status !== 'completed' && onToggle && (
+        {status !== "completed" && onToggle && (
           <Button
             variant="outline"
             size="sm"
             onClick={() => onToggle(experiment.id)}
           >
-            {status === 'running' ? (
+            {status === "running" ? (
               <>
                 <Pause className="h-4 w-4 mr-2" />
                 Pause
@@ -160,5 +163,5 @@ export function ExperimentCard({
         )}
       </CardFooter>
     </Card>
-  )
+  );
 }

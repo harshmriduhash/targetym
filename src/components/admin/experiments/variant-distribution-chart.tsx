@@ -4,35 +4,35 @@
  * Displays variant distribution using a simple bar chart
  */
 
-'use client'
+"use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Progress } from '@/components/ui/progress'
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
 
 interface VariantDistribution {
-  variantId: string
-  variantName: string
-  count: number
-  percentage: number
+  variantId: string;
+  variantName: string;
+  count: number;
+  percentage: number;
 }
 
 interface VariantDistributionChartProps {
-  distribution: VariantDistribution[]
+  distribution: VariantDistribution[];
 }
 
 const COLORS = [
-  'bg-blue-500',
-  'bg-green-500',
-  'bg-yellow-500',
-  'bg-purple-500',
-  'bg-pink-500',
-  'bg-indigo-500',
-]
+  "bg-blue-500",
+  "bg-green-500",
+  "bg-yellow-500",
+  "bg-purple-500",
+  "bg-pink-500",
+  "bg-indigo-500",
+];
 
 export function VariantDistributionChart({
   distribution,
 }: VariantDistributionChartProps) {
-  const total = distribution.reduce((sum, d) => sum + d.count, 0)
+  const total = distribution.reduce((sum, d) => sum + d.count, 0);
 
   return (
     <Card>
@@ -79,5 +79,5 @@ export function VariantDistributionChart({
         )}
       </CardContent>
     </Card>
-  )
+  );
 }
