@@ -4,9 +4,9 @@
  * Form to add user-specific feature flag overrides
  */
 
-'use client'
+"use client";
 
-import { Button } from '@/components/ui/button'
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -14,19 +14,19 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Switch } from '@/components/ui/switch'
-import { useState, useTransition } from 'react'
-import { toast } from 'sonner'
-import { addFeatureFlagOverride } from '@/src/actions/admin/feature-flags/add-override'
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+import { useState, useTransition } from "react";
+import { toast } from "sonner";
+import { addFeatureFlagOverride } from "@/src/actions/admin/feature-flags/add-override";
 
 interface UserOverrideFormProps {
-  flagName: string
-  open: boolean
-  onOpenChange: (open: boolean) => void
-  onSuccess?: () => void
+  flagName: string;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  onSuccess?: () => void;
 }
 
 export function UserOverrideForm({
@@ -35,17 +35,17 @@ export function UserOverrideForm({
   onOpenChange,
   onSuccess,
 }: UserOverrideFormProps) {
-  const [isPending, startTransition] = useTransition()
-  const [userId, setUserId] = useState('')
-  const [enabled, setEnabled] = useState(true)
-  const [reason, setReason] = useState('')
+  const [isPending, startTransition] = useTransition();
+  const [userId, setUserId] = useState("");
+  const [enabled, setEnabled] = useState(true);
+  const [reason, setReason] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
 
     if (!userId.trim()) {
-      toast.error('User ID is required')
-      return
+      toast.error("User ID is required");
+      return;
     }
 
     startTransition(async () => {
@@ -54,20 +54,20 @@ export function UserOverrideForm({
         flagName,
         enabled,
         reason: reason.trim() || undefined,
-      })
+      });
 
       if (result.success) {
-        toast.success('Override added successfully')
-        setUserId('')
-        setReason('')
-        setEnabled(true)
-        onOpenChange(false)
-        onSuccess?.()
+        toast.success("Override added successfully");
+        setUserId("");
+        setReason("");
+        setEnabled(true);
+        onOpenChange(false);
+        onSuccess?.();
       } else {
-        toast.error(result.error)
+        toast.error(result.error);
       }
-    })
-  }
+    });
+  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -123,11 +123,11 @@ export function UserOverrideForm({
               Cancel
             </Button>
             <Button type="submit" disabled={isPending}>
-              {isPending ? 'Adding...' : 'Add Override'}
+              {isPending ? "Adding..." : "Add Override"}
             </Button>
           </DialogFooter>
         </form>
       </DialogContent>
     </Dialog>
-  )
+  );
 }
